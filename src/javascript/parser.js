@@ -1,153 +1,118 @@
 class Parser{
 
-    let isNumber = (number) => {
-        return /[0-9]+/.test(number);
-    };
+    static testExpression(exp){
 
-    let isPar = (text) => {
-        return text == ')' || text == '(';
-    }
+        if(exp.includes('(')){
+			if(exp.includes(')')){
+				//Checking if '(' appears same number of times as ')'
+				if(cont.match(/\(/g).length != cont.match(/\)/g).length){
+					return false;
+				}else{
+					let open = [];
+                    let iter = 0;
+					while(iter != exp.length){
+						if(exp[iter] == '('){
+							open.push('(');
+							iter++;
+						}else if(exp[iter] == ')'){
+							if(open.length < 1){
+								return false;
+							}else{
+								open.pop();
+								iter++;
+							}
+						}else{
+							iter++;
+							continue;
+						}
+					}
+				}
+			}else{
+				return false;
+			}
+		}
 
-    let isOperator = (ope) => {
-        let operators = ['*','/','+','-'];
-        return operators.includes(ope);
-    };
+		let it = 0, expLength = exp.length, finalValue = null;
 
-    // //testting expression in a recursive way
-    // let recTestExp = (index,expLength) => {
-    //     let np = 1;
-    //     let end = 0;
-    //     //getting the expression's closing parenthesis
-    //     for(let g=index+1;g < expLength;g++){
-    //         if(exp[g].symbol == '('){ np++;}
-    //         if(exp[g].symbol == ')'){ np--;}
-    //
-    //         if(np == 0){
-    //             end = g == expLength - 1 ? expLength - 1 : g;
-    //             break;
-    //         }
-    //     }
-    //     return testExpression(exp.slice(index + 1,end)) ? end : false;
-    // };
-    //
-    // let isExpression = (cont) => {
-    //
-    //     let jump = 1;
-    //     let it = 0;
-    //
-    //     if(cont.includes('(')){
-    //
-    //         if(cont.includes(')')){
-    //             //Checking if '(' appears same number of times as ')'
-    //             if(cont.match(/\(/g).length != cont.match(/\)/g).length){
-    //                 throw new Error('Missing parenthesis in Expression' + message(pos));
-    //             }else{
-    //                 let open = [];
-    //
-    //                 while(it != cont.length){
-    //                     if(cont[it] == '('){
-    //                         open.push('(');
-    //                         it++;
-    //                     }else if(cont[it] == ')'){
-    //                         if(open.length < 1){
-    //                             throw new Error('Misuse of parenthesis in Expression' + message(pos));
-    //                         }else{
-    //                             open.pop();
-    //                             it++;
-    //                         }
-    //                     }else{
-    //                         it++;
-    //                         continue;
-    //                     }
-    //                 }
-    //                 if(cont[0] == '('){
-    //                     insertToken('(','parenthesis','ExpressionParenthesisOPen',[pos[0],pos[1] + jump]);
-    //                     it = 1;
-    //                 }
-    //             }
-    //         }else{
-    //                 throw new Error('Invalid Expression' + message(pos));
-    //         }
-    //     }
-    //     let token = 0;
-    //     console.log('tamanho do cont: ' + cont.length);
-    //     while(it != cont.length){
-    //         console.log('char da vez ' + it);
-    //
-    //         if(cont[it] != ' '){
-    //             console.log('char...' + cont[it] + 'no it: '  + it);
-    //             console.log('it..' + it);
-    //             if(it != cont.length - 1){
-    //                 console.log('symbol: ' + cont[it]);
-    //             }
-    //             console.log('index: ' + index);
-    //             token = justToken(index + it);
-    //
-    //             console.log('token: ' + token);
-    //             if(cont[it] == '('){
-    //
-    //                 //getting only the content, without the parenthesis
-    //                 let sub = cont.substring(it + 1,cont.indexOf(')'));
-    //
-    //                 //getting the nested possible expression including parenthesis
-    //                 let intSub = cont.substring(it);
-    //                 let otherSub = intSub.substring(0,intSub.indexOf(')') + 1);
-    //
-    //                 if(sub != ''){
-    //                     if(lastToken().class == 'identifier'){
-    //
-    //                     let res = isFunctionCall(sub,[pos[0],pos[1] + it],index + it);
-    //                     console.log('isFunctionCall???..' + res);
-    //
-    //                         if(res){
-    //                             jump += res;
-    //                             it += res;
-    //                         }else{
-    //                             throw new Error('invalid functionCall' + message(pos));
-    //                         }
-    //                     }else{
-    //                         let re = isExpression(otherSub,[pos[0],pos[1] + it],index + it);
-    //                         if(re){
-    //                             jump += re;
-    //                             it += re;
-    //                         }else{
-    //                             throw new Error('invalid type in Expression' + message(pos));
-    //                         }
-    //                     }
-    //                 }else{
-    //                     throw new Error('Invalid Empty Expression' + message(pos));
-    //                 }
-    //             }else if(cont[it] == ')'){
-    //                 insertToken(')','parenthesis','ExpressionParenthesisClose',[pos[0],pos[1] + it]);
-    //                 it++;
-    //                 return it;
-    //             }else if(isIdentifier(token)){
-    //                 insertToken(token,'identifier','ExpressionIdentifier',[pos[0],pos[1] + it]);
-    //                 it+= token.length;
-    //             }else if(isOperator(token)){
-    //                 //Checking if is an operation or signing
-    //                 let opt = isSign(token) ? 'sign' : isOperator(token);
-    //                 let sub = opt == 'sign' ? 'numberSign' : 'ExpressionOperator';
-    //
-    //                 insertToken(token,opt,sub,[pos[0],pos[1] + it]);
-    //                 it += token.length;
-    //                 if([';',')'].includes(code[it])){
-    //                     throw new Error('Missing another operator in Expression' + message(pos));
-    //                 }
-    //             }else if(isNumber(token)){
-    //                 let cl = tokensTable.length != 0 && lastToken().class != 'sign' ?
-    //                          'unsignedNumber' : 'number';
-    //                 insertToken(token,cl,'ExpressionNumber',[pos[0],pos[1] + it]);
-    //                 it+= token.length;
-    //             }else{
-    //                 throw new Error('invalid type in Expression' + message(pos));
-    //             }
-    //         }else{
-    //             it++;
-    //             continue;
-    //         }
-    //     }
-    //     return it;
-    // };
+		let acepTypes = ['identifier','functionIdentifier',
+						 'actualParameter','unsignedNumber',
+						 'functionCall','sign'];
 
+		//testting expression in a recursive way
+		let recTestExp = (index,expLength) => {
+			let np = 1;
+			let end = 0;
+			//getting the expression's closing parenthesis
+			for(let g=index+1;g < expLength;g++){
+				if(exp[g].symbol == '('){ np++;}
+				if(exp[g].symbol == ')'){ np--;}
+
+				if(np == 0){
+					end = g == expLength - 1 ? expLength - 1 : g;
+					break;
+				}
+			}
+			return testExpression(exp.slice(index + 1,end)) ? end : false;
+		};
+
+		if(exp.some( x => x.class.includes('Operator'))){
+			let inds = [], i = 0;
+
+			for(i;i < expLength; i++){
+				if(exp[i].class.includes('Operator')){
+					inds.push(i);
+				}
+			}
+			i = inds.length - 1;
+			while(i != 0){
+				if(inds[i] - inds[i-1] == 1){
+					throw new Error('Invalid double operator in expression at token: ' + exp[i].symbol);
+				}
+				i--;
+			}
+
+			for(i=0;i < expLength; i++){
+				if(inds.includes(i)){
+					if(i == expLength - 1 || exp[i+1] == ')'){
+						throw new Error('Missing another operator in Expression at token: ' + exp[i].symbol);
+					}
+					continue;
+				}
+				if(!acepTypes.includes(exp[i].class)){
+					if(exp[i].subclass == 'ExpressionParenthesisOPen'){
+						let rr = recTestExp(i,expLength);
+						if(rr){
+							i = rr;
+						}else{
+							return false;
+						}
+					}else{
+						throw new Error('Invalid type in expression at token: ' + exp[i].symbol);
+					}
+				}
+			}
+			return true;
+		}else{
+			console.log(exp);
+			for(it;it < expLength; it++){
+				debugger;
+				if(!acepTypes.includes(exp[it].class)){
+					if(exp[it].subclass == 'ExpressionParenthesisOPen'){
+						let rr = recTestExp(it,expLength);
+						if(rr){
+							it = rr;
+						}else{
+							return false;
+						}
+					}else{
+						throw new Error('Invalid type in expression at token: ' + exp[it].symbol);
+					}
+				}
+			}
+			return true;
+		}
+
+	}
 }
+
+export default Parser;
