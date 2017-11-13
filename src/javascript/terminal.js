@@ -7,6 +7,7 @@ let intervalFunction = () => {
     if(globalExpression != oldGlobalExpression){
 
         let body = document.body;
+        console.log(globalExpression);
         console.log(body);
 
         if( parenTest(globalExpression) ){
