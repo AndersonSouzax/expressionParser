@@ -1,0 +1,7 @@
+.invalid-exp{
+    background: rgba(255,0,0,0.8);
+}
+
+.valid-exp{
+    background: rgba(0, 255, 0, 0.4);
+}
