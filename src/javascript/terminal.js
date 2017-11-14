@@ -12,6 +12,15 @@ let intervalFunction = () => {
 
             let res = Parser.testExpression(globalExpression);
 
+            if(res){
+
+                if(body.classList.contains('invalid-exp')){
+                    body.classList.remove('invalid-exp');
+                }
+                body.classList.add('valid-exp');
+
+                oldGlobalExpression = globalExpression;
+            }
         }else{
             if(body.classList.contains('valid-exp')){
                 body.classList.remove('valid-exp');
