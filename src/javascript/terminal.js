@@ -4,6 +4,41 @@ let globalExpression = "", oldGlobalExpression = "";
 
 let intervalFunction = () => {
 
+    //If there is no expression, then clear the screen
+    if(globalExpression.length == 0){
+
+        document.body.classList.remove('valid-exp');
+        document.body.classList.remove('invalid-exp');
+
+        return;
+    }
+
+    let last = globalExpression[globalExpression.length - 1] || globalExpression[0];
+
+    let changeBodyColor = (valid) => {
+        let body = document.body;
+        let addClass = valid ? 'valid-exp' : 'invalid-exp';
+        let removeClass = valid ? 'invalid-exp' : 'valid-exp';
+
+        if(body.classList.contains(removeClass)){
+            body.classList.remove(removeClass);
+        }
+
+        body.classList.add(addClass);
+    };
+
+    //Checking syntax of expression on last element
+    if(last == '(' || isOperator(last)){
+        changeBodyColor(false);
+        return;
+    }
+
+    //If there's only numbers, no operations
+    if(! /[\(\)]/.test(globalExpression) && ! /[\+\-\/\*]/.test(globalExpression)){
+        //expression value  = globalExpression
+        return;
+    }
+
     if(globalExpression != oldGlobalExpression){
 
         let body = document.body;
@@ -13,19 +48,13 @@ let intervalFunction = () => {
             let res = Parser.testExpression(globalExpression);
 
             if(res){
-
-                if(body.classList.contains('invalid-exp')){
-                    body.classList.remove('invalid-exp');
-                }
-                body.classList.add('valid-exp');
-
+                changeBodyColor(true);
                 oldGlobalExpression = globalExpression;
+            }else{
+                changeBodyColor(false);
             }
         }else{
-            if(body.classList.contains('valid-exp')){
-                body.classList.remove('valid-exp');
-            }
-            body.classList.add('invalid-exp');
+            changeBodyColor(false);
         }
     }
 };

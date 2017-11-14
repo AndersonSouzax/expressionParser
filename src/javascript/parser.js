@@ -4,10 +4,6 @@ class Parser{
 
 		let it = 0, expLength = exp.length, finalValue = null;
 
-		let acepTypes = ['identifier','functionIdentifier',
-						 'actualParameter','unsignedNumber',
-						 'functionCall','sign'];
-
 		//testting expression in a recursive way
 		let recTestExp = (index,expLength) => {
 			let np = 1;
@@ -24,19 +20,22 @@ class Parser{
 			}
 			return testExpression(exp.slice(index + 1,end)) ? end : false;
 		};
-
-		if(exp.some( x => x.class.includes('Operator'))){
+        
+        //If there's some operation
+		if(exp.some( x => /[\+\-\*\/]/.test(exp))){
 			let inds = [], i = 0;
 
 			for(i;i < expLength; i++){
-				if(exp[i].class.includes('Operator')){
+				if(/[\+\-\*\/]/.test(exp[i])){
 					inds.push(i);
 				}
 			}
 			i = inds.length - 1;
+
+            //Checking for double operators ++,**,--,//
 			while(i != 0){
 				if(inds[i] - inds[i-1] == 1){
-					throw new Error('Invalid double operator in expression at token: ' + exp[i].symbol);
+					return null;
 				}
 				i--;
 			}
@@ -44,7 +43,7 @@ class Parser{
 			for(i=0;i < expLength; i++){
 				if(inds.includes(i)){
 					if(i == expLength - 1 || exp[i+1] == ')'){
-						throw new Error('Missing another operator in Expression at token: ' + exp[i].symbol);
+						return null;
 					}
 					continue;
 				}
