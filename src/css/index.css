@@ -5,3 +5,67 @@
 .valid-exp{
     background: rgba(0, 255, 0, 0.4);
 }
+
+/* Estilo Parte da Div Mais Externa */
+.row{
+    padding: 5%;
+    background-color: #8B4513
+}
+
+/* Estilo Parte de Inserção de Informações */
+#input{
+    padding: 5%;
+    height: 500px;
+    background-color: #FF4500
+}
+
+#lblent{
+    font-size: 3rem;
+    color: #fff;
+    margin-top: 35%;
+    margin-left: 30% 
+}
+
+#ent{
+    width: 300px;
+    margin-left: 10%
+}
+
+/* Estilo Parte de Saída de Informações */
+#output{
+    padding: 5%;
+    height: 500px;
+    background-color: #778899
+}
+
+.text{ /*Estilo da Label*/
+    text-align: center;
+    font-size: 4rem;
+    color: #fff;
+    margin-left: 43%
+}
+
+.saida p{ /* Estilo das Divs */
+    font-size: 3rem;
+    margin-left: 20%;
+    margin-top: 2%;
+    width: 500px;
+    height: 80px
+}
+
+
+/*Estilo dos Paragrafos*/
+#num{
+    background-color: #000;
+    color: #fff
+}
+
+#ope{
+    background-color: #555;
+    color: #fff
+}
+
+#cha{
+    background-color: #105;
+    color: #fff
+}

@@ -1,4 +1,21 @@
-import Parser from './parser.js';
+//import Parser from './parser.js';
+
+/* Função Criada Para Testar o Evento onkeydown */
+function teste(event){
+    var valor = event.key; // = document.getElementById('input').value;
+    //alert('Entrou na Função' + valor);
+    if(valor == 'Backspace' || valor == 'Control' || valor == 'Alt' || valor == 'Tab' || valor == 'CapsLock' || valor == 'Enter'){
+        document.getElementById('num').innerHTML = 'Números';
+        document.getElementById('ope').innerHTML = 'Operadores';
+        document.getElementById('cha').innerHTML = 'Caracteres';
+    }else if (isNumber(valor)) {
+        document.getElementById('num').innerHTML = valor;
+    }else if(isOperator(valor)){
+        document.getElementById('ope').innerHTML = valor;
+    }else{        
+        document.getElementById('cha').innerHTML = valor;
+    }
+}
 
 let globalExpression = "", oldGlobalExpression = "";
 

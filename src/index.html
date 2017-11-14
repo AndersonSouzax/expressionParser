@@ -2,9 +2,63 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Expression Parser</title>
+
+        <title> Expression Parser </title>
+        
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        
+        <!-- Tema opcional -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+        
+        <!-- Necessária importação dos arquivos abaixo -->
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+        <!-- Importação Arquivos JS -->
+        <script type="text/javascript" src="javascript/terminal.js"/></script>
+
+        <!-- Estilo -->
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+
     </head>
     <body>
+    	<nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <p class="navbar-brand"> Trabalho Construção </p>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid">
+
+            <div class="col-sm-12 col-md-12 col-xl-12">
+
+                <div class="row">
+
+                    <div id="input" class="col-xs-6 col-md-4">
+                        <label id="lblent" for="ent"> Digite Aqui </label> <br>
+                        <input type="text" id="ent" onkeydown="teste(event)">
+                    </div>
+
+                    <div id="output" class="col-xs-12 col-sm-6 col-md-8">
+                        <label class="text"> Saída </label> <br>
+                        <div class="saida text-center"> <p id="num">Números</p> </div>
+                        <div class="saida text-center"> <p id="ope">Operadores</p> </div>
+                        <div class="saida text-center"> <p id="cha">Caracteres</p> </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins)    -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
     </body>
 </html>
