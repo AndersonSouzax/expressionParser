@@ -1,6 +1,42 @@
-import Parser from './parser.js';
-
+let parser = new Parser();
 let globalExpression = "", oldGlobalExpression = "";
+let box = document.getElementById('textBox');
+
+let changeBodyColor = (valid) => {
+    let body = document.body;
+    let addClass = valid ? 'valid-exp' : 'invalid-exp';
+    let removeClass = valid ? 'invalid-exp' : 'valid-exp';
+
+    if(body.classList.contains(removeClass)){
+        body.classList.remove(removeClass);
+    }
+
+    body.classList.add(addClass);
+};
+
+let filter = (event) => {
+
+    let value = event.key;
+    
+    if(isPar(value) || isNumber(value) || isOperator(value) || value == 'Backspace'){
+        let content = box.value.trim();
+
+        if(/[a-zA-Z@#$%&!?;\.,]/.test(content)){
+            if(!document.body.classList.contains('invalid-exp')){
+                changeBodyColor(false);
+            }
+            return;
+        }
+        globalExpression = content
+        console.log(globalExpression);
+
+        document.body.classList.remove('valid-exp');
+        document.body.classList.remove('invalid-exp');
+
+    }else if( !value.indexOf('Arrow') == 0){
+        changeBodyColor(false);
+    }
+};
 
 let intervalFunction = () => {
 
@@ -14,18 +50,6 @@ let intervalFunction = () => {
     }
 
     let last = globalExpression[globalExpression.length - 1] || globalExpression[0];
-
-    let changeBodyColor = (valid) => {
-        let body = document.body;
-        let addClass = valid ? 'valid-exp' : 'invalid-exp';
-        let removeClass = valid ? 'invalid-exp' : 'valid-exp';
-
-        if(body.classList.contains(removeClass)){
-            body.classList.remove(removeClass);
-        }
-
-        body.classList.add(addClass);
-    };
 
     //Checking syntax of expression on last element
     if(last == '(' || isOperator(last)){
@@ -45,7 +69,7 @@ let intervalFunction = () => {
 
         if( parenTest(globalExpression) ){
 
-            let res = Parser.testExpression(globalExpression);
+            let res = parser.testExpression(globalExpression);
 
             if(res){
                 changeBodyColor(true);
@@ -60,7 +84,7 @@ let intervalFunction = () => {
 };
 
 //Digest cycle, like angular
-setInterval(intervalFunction, 500);
+//setInterval(intervalFunction, 1000);
 
 
 let isNumber = (number) => {

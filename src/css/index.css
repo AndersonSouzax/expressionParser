@@ -5,3 +5,18 @@
 .valid-exp{
     background: rgba(0, 255, 0, 0.4);
 }
+
+#textBox{
+    width: 400px;
+    height: 50px;
+    position: absolute;
+    top: 25%;
+    right: 35%;
+    resize: none;
+    background: black;
+    color: white;
+}
+
+body{
+    text-align: center;
+}

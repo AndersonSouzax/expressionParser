@@ -20,7 +20,7 @@ class Parser{
 			}
 			return testExpression(exp.slice(index + 1,end)) ? end : false;
 		};
-        
+
         //If there's some operation
 		if(exp.some( x => /[\+\-\*\/]/.test(exp))){
 			let inds = [], i = 0;
@@ -83,5 +83,3 @@ class Parser{
 
 	}
 }
-
-export default Parser;
