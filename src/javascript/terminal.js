@@ -1,6 +1,11 @@
 let parser = new Parser();
 let globalExpression = "", oldGlobalExpression = "";
 let box = document.getElementById('textBox');
+let expBox = document.getElementById('expResult');
+
+let setResult = (res) => {
+    expBox.innerHTML = res;
+};
 
 let changeBodyColor = (valid) => {
     let body = document.body;
@@ -16,8 +21,12 @@ let changeBodyColor = (valid) => {
 
 let filter = (event) => {
 
+    if(expBox.innerHTML != ''){
+        expBox.innerHTML = '';
+    }
+
     let value = event.key;
-    
+
     if(isPar(value) || isNumber(value) || isOperator(value) || value == 'Backspace'){
         let content = box.value.trim();
 
@@ -59,7 +68,7 @@ let intervalFunction = () => {
 
     //If there's only numbers, no operations
     if(! /[\(\)]/.test(globalExpression) && ! /[\+\-\/\*]/.test(globalExpression)){
-        //expression value  = globalExpression
+        setResult(globalExpression);
         return;
     }
 
@@ -73,6 +82,7 @@ let intervalFunction = () => {
 
             if(res){
                 changeBodyColor(true);
+                setResult(res);
                 oldGlobalExpression = globalExpression;
             }else{
                 changeBodyColor(false);

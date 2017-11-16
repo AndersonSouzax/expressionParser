@@ -74,7 +74,7 @@ class Parser{
 							return false;
 						}
 					}else{
-						throw new Error('Invalid type in expression at token: ' + exp[it].symbol);
+						return false;
 					}
 				}
 			}
