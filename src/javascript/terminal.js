@@ -1,4 +1,3 @@
-let parser = new Parser();
 let globalExpression = "", oldGlobalExpression = "";
 let box = document.getElementById('textBox');
 let expBox = document.getElementById('expResult');
@@ -28,19 +27,27 @@ let filter = (event) => {
     let value = event.key;
 
     if(isPar(value) || isNumber(value) || isOperator(value) || value == 'Backspace'){
-        let content = box.value.trim();
 
-        if(/[a-zA-Z@#$%&!?;\.,]/.test(content)){
-            if(!document.body.classList.contains('invalid-exp')){
-                changeBodyColor(false);
+        setTimeout( () => {
+
+            let content = box.value.trim();
+
+            if(/[a-zA-Z\@\#\$\%\&\!\?\;\.\,]/.test(content)){
+                if(!document.body.classList.contains('invalid-exp')){
+                    changeBodyColor(false);
+                }
+                return;
             }
-            return;
-        }
-        globalExpression = content
-        console.log(globalExpression);
+            globalExpression = content;
 
-        document.body.classList.remove('valid-exp');
-        document.body.classList.remove('invalid-exp');
+            console.log(globalExpression);
+
+            document.body.classList.remove('valid-exp');
+            document.body.classList.remove('invalid-exp');
+
+            intervalFunction();
+
+        },500);
 
     }else if( !value.indexOf('Arrow') == 0){
         changeBodyColor(false);
@@ -78,13 +85,16 @@ let intervalFunction = () => {
 
         if( parenTest(globalExpression) ){
 
-            let res = parser.testExpression(globalExpression);
+            let res = Parser.testExpression(globalExpression);
 
             if(res){
+                console.log('results: '+ res);
                 changeBodyColor(true);
                 setResult(res);
                 oldGlobalExpression = globalExpression;
+                console.log(oldGlobalExpression);
             }else{
+                console.log('eradoooo');
                 changeBodyColor(false);
             }
         }else{
@@ -94,7 +104,7 @@ let intervalFunction = () => {
 };
 
 //Digest cycle, like angular
-//setInterval(intervalFunction, 1000);
+// setInterval(intervalFunction, 4000);
 
 
 let isNumber = (number) => {
@@ -115,7 +125,7 @@ let parenTest = (exp) => {
     if(exp.includes('(')){
         if(exp.includes(')')){
             //Checking if '(' appears same number of times as ')'
-            if(cont.match(/\(/g).length != cont.match(/\)/g).length){
+            if(exp.match(/\(/g).length != exp.match(/\)/g).length){
                 return false;
             }else{
 

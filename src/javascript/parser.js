@@ -10,8 +10,8 @@ class Parser{
 
 			//getting the expression's closing parenthesis
 			for(let g=index+1;g < expLength;g++){
-				if(exp[g].symbol == '('){ np++;}
-				if(exp[g].symbol == ')'){ np--;}
+				if(exp[g] == '('){ np++;}
+				if(exp[g] == ')'){ np--;}
 
 				if(np == 0){
 					end = g == expLength - 1 ? expLength - 1 : g;
@@ -28,26 +28,26 @@ class Parser{
             }
 
             while(exp.indexOf('(') != -1){
-
+debugger;
                 let index  = exp.indexOf('(');
                 let end = getIntExp(exp,index);
-
+debugger;
                 let value =  recSolveExp( exp.substring( index + 1, end) );
-
+debugger;
                 if(!value) { return null; }
 
-                let oneSide = index != 0 ? exp.substring(0,index) : '';
-                let otherSide = end != exp.length - 1 ? exp.substring(end + 1) : '';
-
-                oneSide[oneSide.length] = value;
+                let oneSide = index != 0 ? exp.substring(0,index) : ' ';
+                let otherSide = end != exp.length - 1 ? exp.substring(end + 1) : ' ';
+debugger;
+                oneSide += value;
 
                 exp = oneSide + otherSide;
 
             }
 
             while(/[\+\-\*\/]/.test(exp)){
-
-                let operation = { 'sy' , '*', index : 0 };
+console.log('still have: ' + exp);
+                let operation = { 'sy' : '*', index : 0 };
                 let right = '', left = '', rightSide = 0, leftSide = 0;
                 let mat = null, value = null, end = 0;
 
@@ -56,30 +56,40 @@ class Parser{
 
                      operation.sy = '*';
                      //Negative and non-negative numbers
-                     mat = exp.match(/-?[0-9]+\s+\*\s+-?[0-9]+/ );
+                     mat = exp.match(/-?[0-9]+\s*\*\s*-?[0-9]+/ );
+                     if(!mat){ return null; }
                      operation.index = mat.index;
                      operation.sub = mat[0];
 
                 }else if(exp.indexOf('/') != -1){
                      operation.sy = '/';
-                     mat = exp.match(/-?[0-9]+\s+\/\s+-?[0-9]+/ );
+                     mat = exp.match(/-?[0-9]+\s*\/\s*-?[0-9]+/ );
+                     if(!mat){ return null; }
                      operation.index = mat.index;
                      operation.sub = mat[0];
 
                 }else if(exp.indexOf('+') != -1){
                      operation.sy = '+';
-                     mat = exp.match(/-?[0-9]+\s+\/\s+-?[0-9]+/ );
+                     mat = exp.match(/-?[0-9]+\s*\+\s*-?[0-9]+/ );
+                     if(!mat){ return null; }
                      operation.index = mat.index;
                      operation.sub = mat[0];
                 }else{
                     operation.sy = '-';
-                    mat = exp.match(/-?[0-9]+\s+\-\s+-?[0-9]+/ );
+                    mat = exp.match(/-?[0-9]+\s*\-\s*\-?[0-9]+/ );
+                    if(!mat){ return null; }
                     operation.index = mat.index;
                     operation.sub = mat[0];
                 }
 
                 if(operation.sy == '-'){
 
+                    let prop = operation.sub;
+                    right = prop.match(/^\s*\-[0-9]+\s*/) || prop.match(/^\s*[0-9]+\s*/);
+                    right = right[0];
+                    left = prop.substring(right.length + 1);
+                    right = parseInt(right);
+                    left = parseInt(left);
                 }else{
 
                     let sub = operation.sub.split(operation.sy);
@@ -107,19 +117,21 @@ class Parser{
 
                 //Splicing the expression
                 end = operation.index + (operation.sub.length - 1);
-                rightSide = operation.index != 0 ? exp.substring(0,operation.index) : '';
-                leftSide = end != exp.length - 1 ? exp.substring(end + 1) : '';
-
-                rightSide[rightSide.length] = value;
+                rightSide = operation.index != 0 ? exp.substring(0,operation.index) : ' ';
+                leftSide = end != exp.length - 1 ? exp.substring(end + 1) : ' ';
+debugger;
+                rightSide += value;
 
                 exp = rightSide + leftSide;
+console.log('final exp:' + exp);
+
             }
 
             return exp;
         };
 
         //If there's some operation
-		if(exp.some( x => /[\+\-\*\/]/.test(exp))){
+		if(exp.split('').some( x => /[\+\-\*\/]/.test(exp))){
 			let inds = [], i = 0, pars = [];
 
 			for(i;i < expLength; i++){
@@ -140,7 +152,7 @@ class Parser{
             return recSolveExp(exp);
 
 		}else{
-			console.log(exp);
+			console.log('no pars:' + exp);
 
             //If there are parenthesis
             if(/\(/.test(exp)){
@@ -161,6 +173,7 @@ class Parser{
                 return false;
 
             }else{
+                console.log('passssouu');
                 return exp;
             }
 		}
