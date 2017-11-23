@@ -4,7 +4,7 @@ class Parser{
 
 		let it = 0, expLength = exp.length, finalValue = null;
 
-		//getting the whole intern expression
+		//getting the entire intern expression
 		let getIntExp = (exp, index) => {
 			let np = 1, end = 0, expLength = exp.length;
 
@@ -28,17 +28,17 @@ class Parser{
             }
 
             while(exp.indexOf('(') != -1){
-debugger;
+
                 let index  = exp.indexOf('(');
                 let end = getIntExp(exp,index);
-debugger;
+
                 let value =  recSolveExp( exp.substring( index + 1, end) );
-debugger;
+
                 if(!value) { return null; }
 
                 let oneSide = index != 0 ? exp.substring(0,index) : ' ';
                 let otherSide = end != exp.length - 1 ? exp.substring(end + 1) : ' ';
-debugger;
+
                 oneSide += value;
 
                 exp = oneSide + otherSide;
@@ -46,7 +46,11 @@ debugger;
             }
 
             while(/[\+\-\*\/]/.test(exp)){
-console.log('still have: ' + exp);
+
+                //catching -1, -56787...
+                if(exp.match(/[\+\-\*\/]/g).length == 1 && /^\s+?\-[0-9]+/.test(exp)){
+                    break;
+                }
                 let operation = { 'sy' : '*', index : 0 };
                 let right = '', left = '', rightSide = 0, leftSide = 0;
                 let mat = null, value = null, end = 0;
@@ -119,11 +123,10 @@ console.log('still have: ' + exp);
                 end = operation.index + (operation.sub.length - 1);
                 rightSide = operation.index != 0 ? exp.substring(0,operation.index) : ' ';
                 leftSide = end != exp.length - 1 ? exp.substring(end + 1) : ' ';
-debugger;
+
                 rightSide += value;
 
                 exp = rightSide + leftSide;
-console.log('final exp:' + exp);
 
             }
 
@@ -152,7 +155,6 @@ console.log('final exp:' + exp);
             return recSolveExp(exp);
 
 		}else{
-			console.log('no pars:' + exp);
 
             //If there are parenthesis
             if(/\(/.test(exp)){
@@ -173,7 +175,6 @@ console.log('final exp:' + exp);
                 return false;
 
             }else{
-                console.log('passssouu');
                 return exp;
             }
 		}

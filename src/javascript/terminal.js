@@ -20,13 +20,13 @@ let changeBodyColor = (valid) => {
 
 let filter = (event) => {
 
-    if(expBox.innerHTML != ''){
-        expBox.innerHTML = '';
-    }
-
     let value = event.key;
 
     if(isPar(value) || isNumber(value) || isOperator(value) || value == 'Backspace'){
+
+        if(expBox.innerHTML != ''){
+            expBox.innerHTML = '';
+        }
 
         setTimeout( () => {
 
@@ -40,16 +40,16 @@ let filter = (event) => {
             }
             globalExpression = content;
 
-            console.log(globalExpression);
-
-            document.body.classList.remove('valid-exp');
-            document.body.classList.remove('invalid-exp');
-
             intervalFunction();
 
         },500);
 
-    }else if( !value.indexOf('Arrow') == 0){
+    }else if(!['Home','End','Alt', 'ArrowRight', 'ArrowLeft'].includes(value)){
+
+        if(expBox.innerHTML != ''){
+            expBox.innerHTML = '';
+        }
+
         changeBodyColor(false);
     }
 };
@@ -88,13 +88,10 @@ let intervalFunction = () => {
             let res = Parser.testExpression(globalExpression);
 
             if(res){
-                console.log('results: '+ res);
                 changeBodyColor(true);
                 setResult(res);
                 oldGlobalExpression = globalExpression;
-                console.log(oldGlobalExpression);
             }else{
-                console.log('eradoooo');
                 changeBodyColor(false);
             }
         }else{
@@ -102,10 +99,6 @@ let intervalFunction = () => {
         }
     }
 };
-
-//Digest cycle, like angular
-// setInterval(intervalFunction, 4000);
-
 
 let isNumber = (number) => {
     return /[0-9]+/.test(number);

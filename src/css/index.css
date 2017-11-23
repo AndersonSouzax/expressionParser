@@ -24,6 +24,7 @@ body{
 #expResult{
     position: absolute;
     top: 50%;
-    left: 48%;
+    left: 30%;
+    right: 30%;
     text-align: center;
 }
